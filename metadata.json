@@ -1,0 +1,12 @@
+{
+  "name": "Smart Poultry Manager",
+  "description": "Application intelligente de gestion avicole avec suivi quotidien, calculs automatiques et détection des maladies par IA.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "AI Disease Detection",
+    "Real-time Poultry Tracking",
+    "Financial Management"
+  ]
+}
