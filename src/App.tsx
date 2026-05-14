@@ -39,6 +39,7 @@ import { GoogleGenAI } from "@google/genai";
 
 import { Project, DailyLog, ProjectType, User, FeedPriceConfig, MaintenanceTask } from './types';
 import { cn } from './constants';
+import { GEMINI_API_KEY } from './lib/api';
 // import { detectDiseaseFromImage } from './services/ai'; // Removing local service as we use Gemini directly
 
 // --- Sub-components (Simplified for now) ---
@@ -1279,7 +1280,7 @@ function AIDetector() {
     if (!image && !observations.trim()) return;
     setAnalyzing(true);
     try {
-      const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+      const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
       
       const prompt = `En tant qu'expert vétérinaire avicole spécialisé dans l'élevage africain (poulets locaux et chair), analyse la situation suivante. 
       Observations du client: "${observations}"

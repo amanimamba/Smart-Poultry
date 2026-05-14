@@ -1,8 +1,13 @@
 import axios from 'axios';
 
 /**
- * Axios instance for Smart Poultry API
- * Note: Update the baseURL to your actual backend server URL in production.
+ * Configuration des Clés API
+ * Note: En production, ces clés devraient idéalement être gérées par un backend.
+ */
+export const GEMINI_API_KEY = "AIzaSyAJJ5wkOwKlRfXthTa8SzeRaOFhlkbQDCg"; // La plateforme injecte normalement process.env.GEMINI_API_KEY
+
+/**
+ * Instance Axios pour l'API Smart Poultry
  */
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'https://api.smartpoultry.example.com/v1',

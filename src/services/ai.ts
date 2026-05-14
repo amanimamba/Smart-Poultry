@@ -1,7 +1,8 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { AIDetectionResult } from "../types";
+import { GEMINI_API_KEY } from "../lib/api";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 export async function detectDiseaseFromImage(base64Image: string): Promise<AIDetectionResult> {
   const prompt = `Analyze this image of a chicken or its feces. 
