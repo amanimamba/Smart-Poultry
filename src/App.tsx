@@ -37,6 +37,8 @@ import { format, differenceInDays, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { GoogleGenAI } from "@google/genai";
 
+import { Toaster, toast } from 'sonner';
+
 import { Project, DailyLog, ProjectType, User, FeedPriceConfig, MaintenanceTask } from './types';
 import { cn } from './constants';
 import { GEMINI_API_KEY } from './lib/api';
@@ -161,6 +163,7 @@ export default function App() {
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden font-sans antialiased text-slate-900">
+      <Toaster position="top-right" richColors />
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col p-6 gap-8 shrink-0">
         <div className="flex items-center gap-3">
@@ -778,7 +781,7 @@ function FeedWaterTracker({ projectId, chickCount, startDate, type, onSave }: { 
   };
 
   const scheduleNotification = (type: string) => {
-    alert(`Rappel programmé ! L'application vous enverra une notification pour le prochain passage : ${type}.`);
+    toast(`Rappel programmé ! L'application vous enverra une notification pour le prochain passage : ${type}.`);
   };
 
   const handleSave = () => {
@@ -795,7 +798,7 @@ function FeedWaterTracker({ projectId, chickCount, startDate, type, onSave }: { 
     
     // Notification reminder
     setTimeout(() => {
-      alert(`RAPPEL: Il est temps de nourrir et d'abreuver vos sujets pour le projet ${projectId}.`);
+      toast.info(`RAPPEL: Il est temps de nourrir et d'abreuver vos sujets pour le projet ${projectId}.`, { duration: 6000 });
     }, 5000);
     
     onSave();
@@ -914,11 +917,11 @@ function CleanlinessTracker({ projectId, onSave }: { projectId: string; onSave: 
     localStorage.setItem('poultry_logs', JSON.stringify([...logs, newLog]));
 
     if (notifications) {
-      alert(`Fréquence de ${frequency} fois par semaine enregistrée. Rappels activés pour le nettoyage !`);
+      toast.success(`Fréquence de ${frequency} fois par semaine enregistrée. Rappels activés pour le nettoyage !`);
       
       // Simulate future reminders
       setTimeout(() => {
-        alert("RAPPEL PROPRETÉ : C'est le moment de vérifier la litière et de désinfecter le matériel pour la santé de votre élevage.");
+        toast.warning("RAPPEL PROPRETÉ : C'est le moment de vérifier la litière et de désinfecter le matériel pour la santé de votre élevage.", { duration: 8000 });
       }, 8000);
     }
     
@@ -962,7 +965,7 @@ function CleanlinessTracker({ projectId, onSave }: { projectId: string; onSave: 
             <span className="text-sm font-bold text-slate-600">M'alerter automatiquement selon cette fréquence</span>
           </label>
           <button 
-            onClick={() => alert(`Fréquence de ${frequency} fois/semaine validée ! Les notifications sont maintenant ${notifications ? 'activées' : 'désactivées'}.`)}
+            onClick={() => toast.success(`Fréquence de ${frequency} fois/semaine validée ! Les notifications sont maintenant ${notifications ? 'activées' : 'désactivées'}.`)}
             className="px-4 py-2 bg-green-600 text-white text-[10px] font-black uppercase rounded-xl hover:bg-green-700 transition-all shadow-sm"
           >
             Valider & Activer
@@ -1016,7 +1019,7 @@ function HealthTracker({ projectId, chickCount, onSave }: { projectId: string; c
   const morbidityRate = (formData.sickBirds / chickCount) * 100;
 
   const scheduleHealthReminder = () => {
-    alert(`Rappel Santé validé ! Fréquence de ${frequency} fois par semaine activée. L'IA surveillera les prochains rapports.`);
+    toast.success(`Rappel Santé validé ! Fréquence de ${frequency} fois par semaine activée. L'IA surveillera les prochains rapports.`);
   };
 
   const handleSave = () => {
@@ -1031,7 +1034,7 @@ function HealthTracker({ projectId, chickCount, onSave }: { projectId: string; c
     };
     localStorage.setItem('poultry_logs', JSON.stringify([...logs, newLog]));
     
-    alert("Données de santé enregistrées !");
+    toast.success("Données de santé enregistrées !");
     onSave();
   };
 
@@ -1157,7 +1160,7 @@ function FollowUpPlanner({ projectId, chickCount, startDate }: { projectId: stri
     }));
     setTasks(newTasks);
     localStorage.setItem(`poultry_tasks_${projectId}`, JSON.stringify(newTasks));
-    alert("Planning de suivi généré avec succès ! Les rappels sont activés.");
+    toast.success("Planning de suivi généré avec succès ! Les rappels sont activés.");
   };
 
   const toggleTask = (id: string) => {
@@ -1313,7 +1316,7 @@ function AIDetector() {
       setResult(data);
     } catch (error) {
       console.error(error);
-      alert("Erreur lors de l'analyse IA. Vérifiez votre connexion.");
+      toast.error("Erreur lors de l'analyse IA. Vérifiez votre connexion.");
     } finally {
       setAnalyzing(false);
     }
